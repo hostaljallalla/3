@@ -8,9 +8,21 @@ const reservationRoutes = require('./routes/reservationRoutes');
 const app = express();
 app.use(express.json());
 
-// ✅ CORS: permitir solo peticiones desde tu frontend en Netlify
+// ✅ CORS: permitir peticiones desde Netlify Y localhost
+const allowedOrigins = [
+  'https://hostaljallalla.netlify.app',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: 'https://hostaljallalla.netlify.app'  // 👈 Este es tu sitio frontend
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // permite Postman y pruebas sin origen
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("No permitido por CORS"));
+    }
+  }
 }));
 
 // 🔗 Conexión a MongoDB con tiempos de espera aumentados
@@ -42,12 +54,4 @@ app.use('/api/reservations', reservationRoutes);
 // 🚪 Puerto del servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
-
-
-
-
-
-
-
-
 
