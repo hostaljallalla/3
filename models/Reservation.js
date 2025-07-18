@@ -13,14 +13,12 @@ const ReservationSchema = new mongoose.Schema({
     phone: { type: String, required: true }, // Teléfono del cliente
     nationality: { type: String, required: true }, // Nacionalidad del cliente
     address: { type: String, required: true }, // Dirección del cliente
+    
+    // --- LÍNEAS AÑADIDAS PARA EL ESTADO DEL PAGO ---
+    paymentMethod: { type: String, default: 'En Hostal' },
+    paymentStatus: { type: String, default: 'pendiente' },
+    transactionId: { type: String, default: 'N/A' },
 });
 
 // Exporta el modelo para usarlo en el backend
 module.exports = mongoose.model('Reservation', ReservationSchema);
-
-
-
-
-
-
-

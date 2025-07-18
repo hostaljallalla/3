@@ -4,6 +4,7 @@ const Reservation = require('../models/Reservation'); // Importar el modelo
 
 // Crear una reserva
 router.post('/', async (req, res) => {
+    // CAMPOS DE PAGO AÑADIDOS a la lista que se extrae del cuerpo de la petición
     const { 
         roomId, 
         clientName, 
@@ -15,7 +16,10 @@ router.post('/', async (req, res) => {
         rutOrPassport, 
         phone, 
         nationality, 
-        address 
+        address,
+        paymentMethod,
+        paymentStatus,
+        transactionId 
     } = req.body;
 
     const checkInDate = new Date(checkIn);
@@ -36,6 +40,10 @@ router.post('/', async (req, res) => {
             phone,
             nationality,
             address,
+            // SE GUARDAN LOS NUEVOS CAMPOS de pago en la base de datos
+            paymentMethod,
+            paymentStatus,
+            transactionId,
         });
 
         await newReservation.save();
@@ -109,16 +117,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
