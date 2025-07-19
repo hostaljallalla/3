@@ -15,7 +15,7 @@ const ReservationSchema = new mongoose.Schema({
     address: { type: String, required: true }, // Dirección del cliente
     
     // --- LÍNEAS AÑADIDAS PARA EL ESTADO DEL PAGO ---
-    paymentMethod: { type: String, default: 'En Hostal' },
+    paymentMethod: { type: String, default: 'En hostal' },
     paymentStatus: { type: String, default: 'pendiente' },
     transactionId: { type: String, default: 'N/A' },
 });

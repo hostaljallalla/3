@@ -2,58 +2,35 @@ const express = require('express');
 const router = express.Router();
 const Reservation = require('../models/Reservation'); // Importar el modelo
 
-// Crear una reserva
+// --- SECCIÓN MODIFICADA ---
+// Crear una reserva (ahora usa un método más robusto)
 router.post('/', async (req, res) => {
-    // CAMPOS DE PAGO AÑADIDOS a la lista que se extrae del cuerpo de la petición
-    const { 
-        roomId, 
-        clientName, 
-        clientName2, 
-        clientEmail, 
-        numberOfGuests, 
-        checkIn, 
-        checkOut, 
-        rutOrPassport, 
-        phone, 
-        nationality, 
-        address,
-        paymentMethod,
-        paymentStatus,
-        transactionId 
-    } = req.body;
-
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-    const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-
+    console.log("Backend recibió en req.body:", req.body);
     try {
+        // Se extraen las fechas para el cálculo seguro en el backend
+        const { checkIn, checkOut } = req.body;
+        
+        // Se calcula el número de noches en el backend para mayor seguridad
+        const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+
+        // Se crea la nueva reserva usando el método robusto:
+        // 1. Se pasan TODOS los campos que vienen del frontend con "...req.body"
+        // 2. Se sobreescribe el campo "nights" con el valor calculado aquí
         const newReservation = new Reservation({
-            roomId,
-            clientName,
-            clientName2: clientName2 || null,
-            clientEmail: clientEmail || null,
-            numberOfGuests,
-            checkIn,
-            checkOut,
-            nights,
-            rutOrPassport,
-            phone,
-            nationality,
-            address,
-            // SE GUARDAN LOS NUEVOS CAMPOS de pago en la base de datos
-            paymentMethod,
-            paymentStatus,
-            transactionId,
+            ...req.body,
+            nights: nights,
         });
 
         await newReservation.save();
         res.status(201).json({ message: 'Reserva creada con éxito', reservation: newReservation });
+
     } catch (error) {
         console.error('Error al crear reserva:', error);
         res.status(500).json({ message: 'Error interno al crear la reserva' });
     }
 });
 
+// --- EL RESTO DEL ARCHIVO PERMANECE IGUAL ---
 // Verificar disponibilidad de habitaciones
 router.post('/check-availability', async (req, res) => {
     const { checkIn, checkOut } = req.body;
