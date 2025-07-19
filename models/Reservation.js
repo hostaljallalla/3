@@ -13,7 +13,7 @@ const ReservationSchema = new mongoose.Schema({
     phone: { type: String, required: true }, // Teléfono del cliente
     nationality: { type: String, required: true }, // Nacionalidad del cliente
     address: { type: String, required: true }, // Dirección del cliente
-    
+    totalCost: { type: Number, required: true },
     // --- LÍNEAS AÑADIDAS PARA EL ESTADO DEL PAGO ---
     paymentMethod: { type: String, default: 'En hostal' },
     paymentStatus: { type: String, default: 'pendiente' },
