@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto&display=swap');
+
+.header-container {
+    height: 150px;
+    position: relative;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Fila Superior: Título */
+.header-title {
+    font-size: 2.0rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+/* Fila Inferior: Logo y Navegación */
+.header-bottom-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Izquierda: Logo */
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* --- AJUSTE PARA SUBIR EL LOGO --- */
+    position: relative;
+    top: -30px; /* Un valor negativo lo mueve hacia arriba. Ajusta este número si es necesario. */
+}
+
+.logo {
+    width: 95px;
+    height: auto;
+}
+
+/* Centro: Navegación Principal */
+.main-nav {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.nav-links li {
+    margin: 0 5px;
+}
+
+/* Derecha: Área de Admin */
+.admin-area {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-button, .admin-button {
+    text-decoration: none;
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+    background-color: transparent;
+    color: white;
+    white-space: nowrap;
+}
+
+.nav-button:hover, .admin-button:hover {
+    background-color: white;
+    color: #011159;
+}
+
+.admin-button {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #011159;
+}
+
+/* El menú hamburguesa está oculto en escritorio */
+.mobile-admin-menu {
+    display: none;
+}
+
+
+/* --- ESTILOS RESPONSIVOS --- */
+@media (max-width: 992px) {
+    /* Ocultamos el botón de admin de escritorio */
+    .admin-button-desktop {
+        display: none;
+    }
+
+    /* Mostramos el menú móvil */
+    .mobile-admin-menu {
+        display: block;
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 35px;
+        height: 35px;
+        background: #ffc107;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .hamburger-line {
+        width: 100%;
+        height: 3px;
+        background-color: #011159;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        z-index: 100;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-title {
+        font-size: 1.3rem;
+    }
+
+    .nav-button {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    .nav-links li {
+        margin: 0 2px;
+    }
+}

@@ -1,0 +1,142 @@
+/* Contenedor principal */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #cea6a6;
+    margin: 2;
+    padding: 2;
+}
+
+div {
+    border-radius: 40px; /* Redondea las esquinas */
+    margin: 5px auto;
+    text-align: center;
+    max-width: 3000px; /* Limitar el ancho */
+}
+
+/* Título principal */
+h2 {
+    color: #333;
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Botones */
+button {
+    padding: 5px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button.delete-btn {
+    background-color: red;
+    color: white;
+}
+
+button.delete-btn:hover {
+    background-color: darkred;
+}
+
+button.back-btn {
+    background-color: #007bff;
+    color: white;
+    margin: 5px; /* Pequeño margen para los botones de acción */
+}
+
+button.back-btn:hover {
+    background-color: #0056b3;
+}
+
+/* --- ESTILOS NUEVOS AÑADIDOS AL FINAL --- */
+
+.admin-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin: 30px auto;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    max-width: 1200px;
+}
+
+.admin-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #495057;
+    font-size: 18px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.admin-form {
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center;
+    gap: 15px; /* Espacio entre todos los elementos del formulario */
+}
+
+.admin-form label {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #495057;
+}
+
+.admin-form input, 
+.admin-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.admin-form button {
+    background-color: #28a745;
+    color: white;
+    margin-left: auto; /* Empuja el botón a la derecha del formulario */
+    padding: 10px 20px;
+}
+.admin-form button:hover {
+    background-color: #218838;
+}
+
+/* Fila especial para mantenimiento en la tabla */
+.maintenance-row td {
+    background-color: #fff0f0 !important;
+    font-style: italic;
+    color: #555;
+}

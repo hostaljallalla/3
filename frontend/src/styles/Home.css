@@ -1,0 +1,230 @@
+/* Contenedor principal */
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 99.5%;
+    height: 268%;
+    object-fit: cover; /* Ajusta el video al contenedor */
+    z-index: -1; /* Envía el video detrás del contenido */
+}
+
+.home-title {
+    color: #e2ab07; /* Cambia este valor por el color que prefieras */
+    font-size: 2.0em; /* Opcional: ajusta el tamaño de la fuente */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Opcional: añade un efecto de sombra */
+}
+
+.home-container {
+    background-size: cover; /* La imagen ocupa todo el contenedor */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que se repita */
+    min-height: 100vh; /* Altura completa de la pantalla */
+}
+
+/* Botón Administrador */
+.admin-button-container {
+    margin-left: 20px;
+}
+
+.admin-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-button:hover {
+    background-color: #0056b3;
+}
+
+/* Lista de habitaciones */
+.room-list {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0;
+}
+
+/* Tarjeta de habitación */
+.room-card {
+    background-color: rgb(255, 222, 114);
+    border: 2px solid #000000;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Imagen dentro de la tarjeta */
+.room-image {
+    width: 100%;
+    height: 155px;
+    object-fit: contain;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+/* Encabezado de la tarjeta */
+.room-card h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Información adicional */
+.room-card p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Botón Ver Detalles */
+.details-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.details-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos de disponibilidad */
+.available {
+    background-color: #1dd849;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.not-available {
+    background-color: #dc3545;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.calendar-message {
+    font-size: 20px;
+    color: #320f0f;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendar-toggle-btn {
+    padding: 10px 10px;
+    font-size: 15px;
+    width: 380px;
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+.calendar-dropdown {
+    margin-top: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.room-group-title {
+    background-color: #ffffff;
+    color: rgb(74, 70, 70);
+    font-size: 1.0em; /* <-- AQUÍ ESTÁ EL CAMBIO */
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    text-shadow: none;
+    text-align: center;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.room-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.show-more-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #011159;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.show-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.arrow {
+    border: solid #011159;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transition: transform 0.3s ease;
+}
+
+.arrow.down {
+    transform: rotate(45deg);
+}
+
+.arrow.up {
+    transform: rotate(-135deg);
+}
