@@ -49,4 +49,4 @@ const roomsData = [
     { id: 17, type: "Habitación Doble con Baño Privado", priceForOne: 35000, priceForTwo: 40000, images: ["/images/room17.jpg"] },
 ];
 
-export default roomsData;
+module.exports = roomsData;
