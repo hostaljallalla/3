@@ -46,16 +46,13 @@ const AdminPanel = () => {
         checkOut: getLocalDate(tomorrow),
     });
 
-    // --- CÓDIGO SIN CAMBIOS ---
-    // El objeto roomPrices ya no es la fuente de verdad, pero se mantiene para no alterar el código.
-    // La nueva lógica en el backend usará `roomsData` importado allí.
     const roomPrices = {
         1: { priceForOne: 17000, priceForTwo: 25000 },
         2: { priceForOne: 20000, priceForTwo: 30000 },
         3: { priceForOne: 25000, priceForTwo: 40000 },
     };
 
-    const handleLogin = (e) => {
+const handleLogin = (e) => {
         e.preventDefault();
         if (username === "admin" && password === "jallalla1478") {
             setIsLoggedIn(true);
@@ -71,11 +68,12 @@ const AdminPanel = () => {
         setReservations([]);
     };
 
+    // --- FUNCIÓN CORREGIDA 1 ---
     const fetchReservations = async () => {
         setLoading(true);
         try {
             const response = await axios.get("https://three-2cs3.onrender.com/api/reservations");
-            setReservations(response.data);
+            setReservations(response.data); // Lógica simplificada
         } catch (error) {
             console.error("Error al obtener reservas:", error);
         } finally {
@@ -98,54 +96,36 @@ const AdminPanel = () => {
         const title = `Registro de Huéspedes - ${formatDateForDisplay(filterDate)}`;
         doc.text(title, 14, 16);
         const sortedReservations = [...filteredReservations].sort((a, b) => a.roomId - b.roomId);
-
-        const head = [[
-            'ID Hab.', 'Nombre', 'RUT/Pasaporte', 'País', 'Teléfono',
-            'Check-In', 'Check-Out', 'Noches', 'Hora de Llegada',
-            'Total ($)', 'Medio de Pago', 'Pagado', 'Pendiente'
-        ]];
-
+        const head = [['ID Hab.', 'Nombre', 'RUT/Pasaporte', 'País', 'Teléfono', 'Check-In', 'Check-Out', 'Noches', 'Hora de Llegada', 'Total ($)', 'Medio de Pago', 'Pagado', 'Pendiente']];
         const body = sortedReservations.map(res => {
             const room = roomsData.find(r => r.id === res.roomId);
             const roomType = room ? room.type.toLowerCase() : '';
             const isDoubleOrMatrimonial = roomType.includes('matrimonial') || roomType.includes('doble');
             let clientNames = res.clientName;
-            if (isDoubleOrMatrimonial) {
-                const secondGuest = res.clientName2 || '';
-                clientNames = `${res.clientName}\n${secondGuest}`;
+            if (isDoubleOrMatrimonial && res.clientName2) {
+                clientNames = `${res.clientName}\n${res.clientName2}`;
             }
-            
             const pagado = res.paymentStatus === 'pagado' ? 'Pagado' : '';
             const pendiente = res.paymentStatus === 'pendiente' ? 'Pendiente' : '';
             const medioDePago = (res.paymentMethod && res.paymentMethod !== 'En Hostal') ? res.paymentMethod : '';
-            const nights = res.nights || Math.max(1, Math.ceil((new Date(res.checkOut) - new Date(res.checkIn)) / (1000 * 60 * 60 * 24)));
-
             return [
                 res.roomId, clientNames, res.rutOrPassport, res.nationality, res.phone,
                 formatDateForDisplay(res.checkIn), formatDateForDisplay(res.checkOut),
-                nights, '', res.totalCost?.toLocaleString() || '0', 
+                res.nights, '', res.totalCost?.toLocaleString('es-CL') || '0', 
                 medioDePago, pagado, pendiente
             ];
         });
-
         doc.autoTable({
-            startY: 22,
-            head: head,
-            body: body,
-            theme: 'grid',
+            startY: 22, head: head, body: body, theme: 'grid',
             headStyles: { fillColor: [41, 128, 186] },
             didDrawCell: (data) => {
                 if (data.column.index === 1 && data.row.index >= 0) {
-                    const reservation = sortedReservations[data.row.index];
-                    if (reservation) {
-                        const room = roomsData.find(r => r.id === reservation.roomId);
-                        if (room) {
-                            const roomType = room.type.toLowerCase();
-                            const isDoubleOrMatrimonial = roomType.includes('matrimonial') || roomType.includes('doble');
-                            if (isDoubleOrMatrimonial) {
-                                const y = data.cell.y + data.cell.height / 2;
-                                doc.line(data.cell.x, y, data.cell.x + data.cell.width, y);
-                            }
+                    const res = sortedReservations[data.row.index];
+                    if (res) {
+                        const room = roomsData.find(r => r.id === res.roomId);
+                        if (room && (room.type.toLowerCase().includes('matrimonial') || room.type.toLowerCase().includes('doble')) && res.clientName2) {
+                            const y = data.cell.y + data.cell.height / 2;
+                            doc.line(data.cell.x, y, data.cell.x + data.cell.width, y);
                         }
                     }
                 }
@@ -159,8 +139,7 @@ const AdminPanel = () => {
         const newManualData = { ...manualData, [name]: value };
         if(name === 'roomId'){
             const room = roomsData.find(r => r.id === parseInt(value));
-            const isIndividual = room && room.type.toLowerCase().includes('individual');
-            if(isIndividual){
+            if(room && room.type.toLowerCase().includes('individual')){
                 newManualData.numberOfGuests = 1;
             }
         }
@@ -172,29 +151,10 @@ const AdminPanel = () => {
 
     const handleMaintenanceFormChange = (e) => setMaintenanceData({ ...maintenanceData, [e.target.name]: e.target.value });
 
+    // --- FUNCIÓN CORREGIDA 2 ---
     const handleManualSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Aunque este cálculo se mantiene para la validación de disponibilidad,
-            // el cálculo final y autoritativo lo hará el backend.
-            const { checkIn, checkOut, roomId, numberOfGuests } = manualData;
-            const nights = Math.max(1, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)));
-            const roomPriceInfo = roomPrices[parseInt(roomId)];
-            const pricePerNight = parseInt(numberOfGuests) === 1 ? roomPriceInfo.priceForOne : roomPriceInfo.priceForTwo;
-            const totalCost = nights * pricePerNight;
-            
-            const availabilityResponse = await axios.post('https://three-2cs3.onrender.com/api/reservations/check-availability', {
-                checkIn: manualData.checkIn,
-                checkOut: manualData.checkOut,
-                roomId: parseInt(manualData.roomId),
-            });
-            if (availabilityResponse.data.unavailableRooms?.includes(parseInt(manualData.roomId))) {
-                alert('Error: La habitación ya está ocupada en las fechas seleccionadas.');
-                return;
-            }
-            
-            // El `totalCost` que se envía aquí será ignorado y recalculado por el backend,
-            // pero lo mantenemos para no romper la estructura original.
             await axios.post('https://three-2cs3.onrender.com/api/reservations', { 
                 ...manualData, 
                 roomId: parseInt(manualData.roomId),
@@ -202,9 +162,7 @@ const AdminPanel = () => {
                 clientName2: manualData.numberOfGuests == 2 ? manualData.clientName2 : undefined,
                 paymentMethod: 'En Hostal',
                 paymentStatus: 'pendiente',
-                totalCost: totalCost,
             });
-
             alert('¡Reserva manual creada con éxito!');
             fetchReservations();
             setManualData(initialManualData); 
@@ -214,6 +172,7 @@ const AdminPanel = () => {
         }
     };
 
+    // --- FUNCIÓN CORREGIDA 3 ---
     const handleMaintenanceSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -226,19 +185,13 @@ const AdminPanel = () => {
                 alert('Error: La habitación ya está ocupada en las fechas seleccionadas para mantenimiento.');
                 return;
             }
-            
-            // --- SECCIÓN MODIFICADA ---
             await axios.post('https://three-2cs3.onrender.com/api/reservations', {
                 ...maintenanceData,
                 roomId: parseInt(maintenanceData.roomId),
                 clientName: 'MANTENIMIENTO',
                 rutOrPassport: 'N/A', phone: 'N/A', nationality: 'N/A', address: 'N/A', numberOfGuests: 0,
-                // --- LÍNEA AÑADIDA ---
-                // Se añade totalCost: 0 para que la petición no falle, ya que el campo es requerido en el modelo.
                 totalCost: 0, 
             });
-            // --- FIN DE LA MODIFICACIÓN ---
-
             alert('¡Fechas bloqueadas por mantenimiento!');
             fetchReservations();
         } catch (error) {
@@ -255,9 +208,7 @@ const AdminPanel = () => {
     };
 
     useEffect(() => {
-        if (isLoggedIn) {
-            fetchReservations();
-        }
+        if (isLoggedIn) { fetchReservations(); }
     }, [isLoggedIn]);
 
     const filteredReservations = reservations.filter(res => {
@@ -267,9 +218,8 @@ const AdminPanel = () => {
     });
 
     const selectedRoomForManualEntry = roomsData.find(r => r.id === parseInt(manualData.roomId));
-    
-    // --- EL RESTO DEL CÓDIGO JSX NO TIENE CAMBIOS ---
-    return (
+
+return (
         <div style={{ textAlign: "center", padding: "20px" }}>
             {!isLoggedIn ? (
                 <form onSubmit={handleLogin}>
